@@ -57,7 +57,7 @@ function makeDesk(node){
   this.colleft = function(){
     colleft = document.createElement('div'); //боковые цифры
     colleft.className ='colleft';
-    document.body.appendChild(colleft);
+    node.appendChild(colleft);
   }
 
   this.colleftNum = function(){
@@ -72,7 +72,7 @@ function makeDesk(node){
   this.colright = function(){
     colright = document.createElement('div'); //боковые цифры
     colright.className ='colright';
-    document.body.appendChild(colright);
+    node.appendChild(colright);
   }
 
   this.colrightNum = function(){
@@ -84,16 +84,95 @@ function makeDesk(node){
     }
   }
 
-  
+  this.eventClick = function () {
+    desk.onclick = function(event){
+    coord = document.getElementById('coordinates');
+    var x= document.getElementsByClassName('active')[0];
+    if(x != undefined)x.classList.remove('active');
+    event.target.classList.add('active'); 
+    coord.innerHTML = event.target.id;
+    }
+  }
+
+  this.eventKeyBoard = function(){
+    document.body.onkeydown = function(event){ 
+      if(event.keyCode == 39){
+        coord = document.getElementById('coordinates');
+        elem = document.getElementsByClassName('active')[0].nextSibling;
+        if(elem ==null){
+          elem = desk.children[0];
+        }
+        x= document.getElementsByClassName('active')[0];
+        if(x != undefined)x.classList.remove('active');
+        elem.classList.add('active'); 
+        coord.innerHTML = elem.id;
+      }
+      else if(event.keyCode == 37){
+        coord = document.getElementById('coordinates');
+        elem = document.getElementsByClassName('active')[0].previousSibling;
+        if(elem ==null){
+          elem = desk.children[63];
+        }
+        x= document.getElementsByClassName('active')[0];
+        if(x != undefined)x.classList.remove('active');
+        elem.classList.add('active'); 
+        coord.innerHTML = elem.id;
+      }
+      else if(event.keyCode == 38){
+        coord = document.getElementById('coordinates');
+        arr=[].map.call(desk.children,function(el){return el});
+        i=arr.indexOf(document.getElementsByClassName('active')[0]);
+        desk.children[i].classList.remove('active');
+        if(i<=7 && i!=0){
+          desk.children[i+55].classList.add('active');
+          a=i+55;
+        }
+        else if(i==0){
+          desk.children[63].classList.add('active');
+          a=63;
+        }
+        else {
+          desk.children[i-8].classList.add('active');
+          a=i-8;
+        }
+        coord.innerHTML = desk.children[a].id;
+      }
+      else if(event.keyCode == 40){
+        coord = document.getElementById('coordinates');
+        arr=[].map.call(desk.children,function(el){return el});
+        i=arr.indexOf(document.getElementsByClassName('active')[0]);
+        desk.children[i].classList.remove('active');
+        if(i>=56 && i!=63){
+          desk.children[i%8+1].classList.add('active');
+          a=i%8+1;
+        }
+        else if(i==63){
+          desk.children[0].classList.add('active');
+          a=0;
+        }
+        else {
+          desk.children[i+8].classList.add('active');
+          a=i+8;
+        }
+        coord.innerHTML = desk.children[a].id;
+      }
+    }
+  }
+
+  this.exe = function(){
+    this.desk();
+    this.tup();
+    this.tdown();
+    this.tabdown();
+    this.tabup();
+    this.sqr();
+    this.colleft();
+    this.colleftNum();
+    this.colright();
+    this.colrightNum();
+    this.eventClick();
+    this.eventKeyBoard();
+  }
 }
 var desk01 = new makeDesk(wraper);
-desk01.desk();
-desk01.tup();
-desk01.tdown();
-desk01.tabdown();
-desk01.tabup();
-desk01.sqr();
-desk01.colleft();
-desk01.colleftNum();
-desk01.colright();
-desk01.colrightNum();
+desk01.exe();
