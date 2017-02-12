@@ -1,4 +1,5 @@
 function makeDesk(node){
+  var x = 500;
   this.desk = function(){
     desk = document.createElement('div'); // формируем шахматную доску
     desk.className = 'desk';
@@ -6,7 +7,7 @@ function makeDesk(node){
   }
 
   this.tup = function(){
-    tup =document.createElement('div'); 
+    tup = document.createElement('div'); 
     tup.className = 'tup';
     node.appendChild(tup);
   }
@@ -19,7 +20,7 @@ function makeDesk(node){
 
   this.tabdown = function(){
     for (var i = 0; i <8;i++){  //буквы снизу
-    var tabdown = document.createElement('div');
+    tabdown = document.createElement('div');
     tabdown.className = 'tabdown';
     tabdown.innerHTML = String.fromCharCode(65+i);
     tdown.appendChild(tabdown);
@@ -28,7 +29,7 @@ function makeDesk(node){
 
   this.tabup = function(){
     for (var i = 0; i <8;i++){
-    var tabup = document.createElement('div'); // буквы сверху
+    tabup = document.createElement('div'); // буквы сверху
     tabup.className = 'tabup';
     tabup.innerHTML = String.fromCharCode(65+i);
     tup.appendChild(tabup);
@@ -39,13 +40,13 @@ function makeDesk(node){
     for(var i= 1 ;i<= 8;i++){
       for(var j = 0;j<8;j++){
         if((i+j)%2){
-          var black = document.createElement('div');
+          black = document.createElement('div');
           black.className = 'black';
           black.id = String.fromCharCode(65+j)+i;
           desk.appendChild(black);
         }
         else{
-          var white = document.createElement('div');
+          white = document.createElement('div');
           white.className = 'white';
           white.id = String.fromCharCode(65+j)+i;
           desk.appendChild(white);
@@ -161,18 +162,50 @@ function makeDesk(node){
 
   this.exe = function(){
     this.desk();
+    this.sqr();
+    this.eventClick();
+    this.eventKeyBoard();
+  }
+  this.extra = function(){
     this.tup();
     this.tdown();
     this.tabdown();
     this.tabup();
-    this.sqr();
     this.colleft();
     this.colleftNum();
     this.colright();
     this.colrightNum();
-    this.eventClick();
-    this.eventKeyBoard();
   }
 }
-var desk01 = new makeDesk(wraper);
-desk01.exe();
+/*var desk01 = new makeDesk(wraper);
+desk01.exe();*/
+
+function makeDeskCustom(node,width){
+  makeDesk.call(this,node);
+  this.exe();
+  var topFortdown= width+ 430;
+  var leftForcolright= 400+width;
+  desk.style.width = width +'px'; 
+  desk.style.height = width +'px'; 
+  for(var i = 0;i<64;i++){
+    desk.children[i].style.width = width/8 + 'px';
+    desk.children[i].style.height = width/8 + 'px';
+  }
+  if(width>=400){
+    this.extra();
+    tup.style.width = width+'px';
+    tdown.style.width = width+'px';
+    tdown.style.top=topFortdown+'px';
+    colleft.style.height= (width+60)+'px';
+    colright.style.height= (width+60)+'px';
+    colright.style.left=leftForcolright+'px';
+    for(var i = 0;i<8;i++){
+      tup.children[i].style.width = width/8+'px';
+      tdown.children[i].style.width= width/8+'px';
+      colleft.children[i].style.height= width/8+'px';
+      colright.children[i].style.height= width/8+'px';
+    }
+  }
+}
+var desk01 = new makeDeskCustom(wraper,80);
+//desk01.exe();
